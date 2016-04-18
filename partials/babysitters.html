@@ -1,0 +1,33 @@
+<div class="row">
+    <div class="col-xs-4">
+        <!-- side bar -->
+
+        <p>Zoek jouw babysitter:</p>
+        <input ng-model="zoeken">
+        <br>
+        <br> Sorteer als volgt:
+        <select ng-model="sorteren">
+            <option value="name">Alfabetisch</option>
+            <option value="-age">Jongste eerst</option>
+            <option value="age">Oudste eerst</option>
+        </select>
+    </div>
+
+    <div class="col-xs-4">
+        <div class="row">
+            <div class="col-lg-4"><b>Naam</b></div>
+            <div class="col-lg-4"><b>Straat</b></div>
+            <div class="col-lg-4"><b>Geboortejaar</b></div>
+        </div>
+        <div class="row" ng-repeat="babysitter in babysitters | orderBy:sorteren | filter: zoeken">
+            <div class="col-lg-4">{{babysitter.name}}</div>
+            <div class="col-lg-4">{{babysitter.street}}</div>
+            <div class="col-lg-4">{{babysitter.age}}</div>
+        </div>
+
+    </div>
+    <div id="map" class="map col-xs-4"></div>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCryY5FWHZ0HmVcESy4VPc3XYmZCpFXXbo&signedin=true&callback=initMap" async defer></script>
+</div>
+
+
