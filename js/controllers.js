@@ -2,8 +2,8 @@ var sitababyApp = angular.module('sitababyApp', ['firebase', 'ngRoute']);
 
 
 // ROUTING CONTROLLER
-sitababyApp.config(['$routeProvider',
-	function ($routeProvider) {
+sitababyApp.config(['$routeProvider', '$locationProvider',
+	function ($routeProvider, $locationProvider) {
         $routeProvider
             .when("/home", {
                 templateUrl: "partials/home.html",
@@ -16,7 +16,8 @@ sitababyApp.config(['$routeProvider',
             .when("/contact", {
                 templateUrl: "partials/contact.html",
                 controller: "contactCtrl"
-            })
+            });
+        $locationProvider.html5Mode(true);
 }]);
 //INDEX CONTROLLER
 sitababyApp.controller('indexCtrl', ['$scope',
