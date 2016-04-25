@@ -16,6 +16,9 @@ sitababyApp.config(['$routeProvider', '$locationProvider',
             .when("/contact", {
                 templateUrl: "partials/contact.html",
                 controller: "contactCtrl"
+            })
+            .otherwise({
+                redirectTo: "/home"
             });
         $locationProvider.html5Mode(true);
 }]);
