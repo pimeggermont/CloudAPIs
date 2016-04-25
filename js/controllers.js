@@ -20,11 +20,21 @@ sitababyApp.config(['$routeProvider', '$locationProvider',
             .otherwise({
                 redirectTo: "/home"
             });
-        $locationProvider.html5Mode(true);
 }]);
-//INDEX CONTROLLER
-sitababyApp.controller('indexCtrl', ['$scope',
-    function ($scope){
+
+/**
+*sitababyApp.service('userService', function() {
+*     return {
+*       setUser: function() {
+*            user = 
+*        }
+*    }
+*})
+**/
+
+//Index CONTROLLER
+sitababyApp.controller('indexCtrl', ['$scope', '$location',
+    function ($scope, $location){
         
         // facebook login sdk
         function statusChangeCallback(response) {
@@ -33,6 +43,7 @@ sitababyApp.controller('indexCtrl', ['$scope',
             if (response.status === 'connected') {
             // Logged into your app and Facebook.
             testAPI();
+            // userService.setUser(response);
             } else if (response.status === 'not_authorized') {
             // The person is logged into Facebook, but not your app.
             document.getElementById('status').innerHTML = 'Please log ' +

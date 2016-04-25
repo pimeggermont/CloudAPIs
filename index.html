@@ -21,7 +21,6 @@
     <!-- Inladen van angular en verwijzen naar controller -->
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.js"></script>
-    <script src="js/angular-ui-router.min.js"></script>
     <script src="js/controllers.js"></script>
 
     <!-- Include Firebase -->
@@ -31,10 +30,7 @@
 
 
 <body>
-   <div ng-controller="indexCtrl" ng-if="userLoggedIn()">
-        <fb:login-button scope="public_profile,email" onlogin="checkLoginState();"></fb:login-button>
-        
-        <div id="status"></div>
+   <div ng-controller="indexCtrl">   
    </div>
    <ng-view></ng-view>
 
