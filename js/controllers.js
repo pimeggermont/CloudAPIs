@@ -17,6 +17,10 @@ sitababyApp.config(['$routeProvider', '$locationProvider',
                 templateUrl: "partials/contact.html",
                 controller: "contactCtrl"
             })
+            .when("/login", {
+                templateUrl: "partials/login.html",
+                controller: "loginCtrl"
+            })
             .otherwise({
                 redirectTo: "/home"
             });
@@ -32,8 +36,15 @@ sitababyApp.config(['$routeProvider', '$locationProvider',
 *})
 **/
 
-//Index CONTROLLER
-sitababyApp.controller('indexCtrl', ['$scope', '$location',
+//INDEX CONTROLLER
+sitababyApp.controller('indexCtrl', ['$scope',
+    function ($scope) {
+
+    }
+]);
+
+//LOGIN CONTROLLER
+sitababyApp.controller('loginCtrl', ['$scope', '$location',
     function ($scope, $location){
         
         // facebook login sdk
