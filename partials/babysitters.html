@@ -1,58 +1,55 @@
-  <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">Sit A Baby</a>
-            </div>
-            <div class="collapse navbar-collapse" id="myNavbar">
-                <ul class="nav navbar-nav">
-                    <li><a href="#/home">Home</a></li>
-                    <li><a href="#/babysitters">Zoek een babysitter</a></li>
-                    <li><a href="#/contact">Contact</a></li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#"><span class="glyphicon glyphicon-user"></span> Bekijk profiel</a></li>
-                </ul>
-            </div>
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Sit A Baby</a>
         </div>
-    </nav>
-     <div class="wrapper">
-        <div class="row">
-            <div class="col-lg-4 col-md-6 col-xs-12">
-                <!-- side bar -->
-
-                <p>Zoek jouw babysitter:</p>
-                <input ng-model="zoeken">
-                <br>
-                <br> Sorteer als volgt:
-                <select ng-model="sorteren">
-                    <option value="name">Alfabetisch</option>
-                    <option value="-age">Jongste eerst</option>
-                    <option value="age">Oudste eerst</option>
-                </select>
-            </div>
-
-            <div class="col-lg-4 col-md-6 col-xs-12">
-                <div class="row">
-                    <div class="col-lg-4 col-md-4 col-xs-4"><b>Naam</b></div>
-                    <div class="col-lg-4 col-md-4 col-xs-4"><b>Straat</b></div>
-                    <div class="col-lg-4 col-md-4 col-xs-4"><b>Geboortejaar</b></div>
-                </div>
-                <div class="row" ng-repeat="babysitter in babysitters | orderBy:sorteren | filter: zoeken">
-                    <div class="col-lg-4 col-md-4 col-xs-4">{{babysitter.name}}</div>
-                    <div class="col-lg-4 col-md-4 col-xs-4" >{{babysitter.street}}</div>
-                    <div class="col-lg-4 col-md-4 col-xs-4">{{babysitter.age}}</div>
-                </div>
-
-            </div>
-            <div id="map" class="map col-lg-4 col-md-12 col-xs-12"></div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav">
+                <li><a href="#/home">Home</a></li>
+                <li><a href="#/babysitters">Zoek een babysitter</a></li>
+                <li><a href="#/contact">Contact</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"><span class="glyphicon glyphicon-user"></span> Bekijk profiel</a></li>
+            </ul>
         </div>
     </div>
-            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCryY5FWHZ0HmVcESy4VPc3XYmZCpFXXbo&signedin=true&callback=initMap" async defer></script>
-      
+</nav>
+<div class="wrapper">
+    <div class="row">
+        <div class="col-lg-4 col-md-6 col-xs-12">
+            <!-- side bar -->
 
+            <p>Zoek jouw babysitter:</p>
+            <input ng-model="zoeken">
+            <br>
+            <br> Sorteer als volgt:
+            <select ng-model="sorteren">
+                <option value="name">Alfabetisch</option>
+                <option value="-age">Jongste eerst</option>
+                <option value="age">Oudste eerst</option>
+            </select>
+        </div>
 
+        <div class="col-lg-4 col-md-6 col-xs-12">
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-xs-4"><b>Naam</b></div>
+                <div class="col-lg-4 col-md-4 col-xs-4"><b>Straat</b></div>
+                <div class="col-lg-4 col-md-4 col-xs-4"><b>Geboortejaar</b></div>
+            </div>
+            <div class="row" ng-repeat="babysitter in babysitters | orderBy:sorteren | filter: zoeken">
+                <div class="col-lg-4 col-md-4 col-xs-4">{{babysitter.name}}</div>
+                <div class="col-lg-4 col-md-4 col-xs-4">{{babysitter.street}}</div>
+                <div class="col-lg-4 col-md-4 col-xs-4">{{babysitter.age}}</div>
+            </div>
+
+        </div>
+        <div id="map" class="map col-lg-4 col-md-12 col-xs-12"></div>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCryY5FWHZ0HmVcESy4VPc3XYmZCpFXXbo&signedin=true&callback=initMap" async defer></script>
+    </div>
+</div>
