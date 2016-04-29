@@ -1,6 +1,27 @@
 var sitababyApp = angular.module('sitababyApp', ['firebase', 'ngRoute']);
 var locations = [];
 
+window.fbAsyncInit = function () {
+            FB.init({
+                appId: '986227158099684',
+                cookie: true, // enables cookies to allow the server to access the session
+                xfbml: true, //parse social plugins on this page
+                version: 'v2.6' // use graph api version 2.5
+            });
+        };
+
+        //Load the SDK asynchronously 
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {
+                return;
+            }
+            js = d.createElement(s);
+            js.id = id;
+            js.src = "//connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+
 // ROUTING CONTROLLER
 sitababyApp.config(['$routeProvider', '$locationProvider',
 	function ($routeProvider, $locationProvider) {
@@ -11,32 +32,75 @@ sitababyApp.config(['$routeProvider', '$locationProvider',
             })
             .when("/babysitters", {
                 templateUrl: "partials/babysitters.html",
-                controller: "babysittersCtrl"
+                controller: "babysittersCtrl",
+                authenticated: true
             })
             .when("/contact", {
                 templateUrl: "partials/contact.html",
-                controller: "contactCtrl"
+                controller: "contactCtrl",
+                authenticated: true
             })
             .otherwise({
                 redirectTo: "/home"
             });
 }]);
 
-/**
- *sitababyApp.service('userService', function() {
- *     return {
- *       setUser: function() {
- *            user = 
- *        }
- *    }
- *})
- **/
+sitababyApp.run(['$rootScope', '$location', 'authFact',
+    function($rootScope, $location, authFact) {
+        $rootScope.$on('$routeChangeStart', function(event, next, current) {
+            // if route is authenticated, then the user shoud access token
+            console.log(next);
+            if (next.$$route.authenticated) {
+                var userAuth = authFact.getAccessToken();
+                if (!userAuth) {
+                    $location.path('/');
+                }
+            }
+        });
 
-//Index CONTROLLER
-sitababyApp.controller('indexCtrl', ['$scope', '$location',
-    function ($scope, $location) {
+    }]);
 
-        // facebook login sdk
+sitababyApp.factory('authFact', [function(){
+    var authFact = {};
+    
+    authFact.setAccessToken = function(accessToken) {
+        authFact.authToken = accessToken;
+    };
+
+    authFact.getAccessToken = function() {
+      return authFact.authToken;
+
+    };
+    return authFact;
+}]);
+
+//HOME CONTROLLER
+sitababyApp.controller('homeCtrl', ['$scope', 'authFact', '$location',
+    function ($scope, authFact, $location) {
+        $scope.name = 'Login please';
+        $scope.FBLogin = function() {
+            FB.login(function(response) {
+                if (response.authResponse) {
+                    console.log('Welcome!  Fetching your information.... ');
+                    FB.api('/me', function (response) {
+                        console.log('Successful login for: ' + response.name);
+
+                        var accessToken = FB.getAuthResponse().accessToken;
+                        console.log(accessToken);
+                        authFact.setAccessToken(accessToken);
+
+                        $location.path("/babysitters");
+                        $scope.$apply();
+                    });
+                } else {
+                    console.log('User cancelled login or did not fully authorize');
+                }
+                        
+                      
+            });
+        };
+}]);
+        /*// facebook login sdk
         function statusChangeCallback(response) {
             console.log('statusChangeCallback');
             console.log(response);
@@ -65,44 +129,26 @@ sitababyApp.controller('indexCtrl', ['$scope', '$location',
             });
         }
 
-        window.fbAsyncInit = function () {
-            FB.init({
-                appId: '986227158099684',
-                cookie: true, // enables cookies to allow the server to access the session
-                xfbml: true, //parse social plugins on this page
-                version: 'v2.6' // use graph api version 2.5
-            });
-
-            FB.getLoginStatus(function (response) {
-                statusChangeCallback(response);
-            });
-        };
-
-        //Load the SDK asynchronously 
-        (function (d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) {
-                return;
-            }
-            js = d.createElement(s);
-            js.id = id;
-            js.src = "//connect.facebook.net/en_US/sdk.js";
-            fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));
-
         function testAPI() {
             console.log('Welcome!  Fetching your information.... ');
             FB.api('/me', function (response) {
                 console.log('Successful login for: ' + response.name);
                 document.getElementById('status').innerHTML =
                     'Thanks for logging in, ' + response.name + '!';
+
+                var accessToken = FB.getAuthResponse().accessToken;
+                console.log(accessToken);
+                authFact.setAccessToken(accessToken);
+
+                $location.path("partials/babysitters");
             });
         }
     }
 ]);
+*/
 
 //HOME CONTROLLER
-sitababyApp.controller('homeCtrl', ['$scope',
+sitababyApp.controller('indexCtrl', ['$scope',
     function ($scope) {
 
 	}
