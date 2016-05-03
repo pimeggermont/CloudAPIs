@@ -175,84 +175,28 @@ sitababyApp.controller('babysittersCtrl', ["$scope", "$firebaseArray",
         $scope.sorteren = 'name';
         $scope.currentLat = 51.369406;
         $scope.currentLng = 4.465898;
-        /*
-        function initMap() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function (position) {
-                    $scope.currentLat = position.coords.latitude
-                    $scope.currentLng = position.coords.longitude
-                    map.setCenter($scope.currentLat,$scope.currentLng);
-                    var marker = new google.maps.Marker({
-                        map: $scope.map,
-                        position: new google.maps.LatLng($scope.currentLat, $scope.currentLng),
-                    });
-                }, function () {
-                    handleLocationError(true, infoWindow, map.getCenter());
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                $scope.currentLat = position.coords.latitude;
+                $scope.currentLng = position.coords.longitude;
+                var map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 16,
+                    center: new google.maps.LatLng($scope.currentLat, $scope.currentLng),
+                    scrollwheel: true,
+                    draggable: true,
+                    mapTypeId: google.maps.MapTypeId.ROAD
+
                 });
-            } else {
-                console.log("geen locatie ondersteuning");
-            }
-            var map = new google.maps.Map(document.getElementById('map'), {
-                center: {
-                    lat: $scope.currentLat,
-                    lng: $scope.currentLng
-                },
-                zoom: 16
-            });
-            
-        }*/
-
-        function getMap() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function (position) {
-                    $scope.currentLat = position.coords.latitude;
-                    $scope.currentLng = position.coords.longitude;
-                }, function (error) {
-                    console.log(error);
+                var marker = new google.maps.Marker({
+                    map: map,
+                    position: new google.maps.LatLng($scope.currentLat, $scope.currentLng)
                 });
-            }
-            var mapoptions = {
-                zoom: 16,
-                center: new google.maps.LatLng($scope.currentLat, $scope.currentLng),
-                scrollwheel: true,
-                draggable: true,
-                mapTypeId: google.maps.MapTypeId.ROAD
-
-            }
-            var map = new google.maps.Map(document.getElementById('map'), mapoptions);
-            var marker = new google.maps.Marker({
-                map: map,
-                position: new google.maps.LatLng($scope.currentLat, $scope.currentLng)
-            });
+            }, function (error) {
+                console.log(error);
+            })
         }
-        getMap();
-        /*
-        function getLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition($scope.showPosition, $scope.showError);
-            }
-        };
-        $scope.showPosition = function (position) {
-            $scope.currentLat = position.coords.latitude;
-            $scope.currentLng = position.coords.longitude;
-        };
-        $scope.showError = function (error) {
-            console.log(error);
-        }
-        getLocation();
-        var mapoptions = {
-            zoom: 16,
-            center: new google.maps.LatLng($scope.currentLat, $scope.currentLng),
-            scrollwheel: true,
-            draggable: true,
-            mapTypeId: google.maps.MapTypeId.ROAD
 
-        }*/
-/*
-        $scope.map = new google.maps.Map(document.getElementById('map'), mapoptions); 
-        //$scope.markers = [];
-        var infoWindow = new google.maps.InfoWindow();
-        */
         //functie voor als we plaatsen van babysitters moeten inladen.
         /*
         var createMarker = function (info) {
@@ -280,17 +224,6 @@ sitababyApp.controller('babysittersCtrl', ["$scope", "$firebaseArray",
                     e.preventDefault();
                     google.maps.event.trigger(selectedMarker, 'click');
                     }
-        */
-        /*
-        var marker = new google.maps.Marker({
-            map: $scope.map,
-            position: new google.maps.LatLng($scope.currentLat, $scope.currentLng),
-            title: "Uw huidige locatie",
-            naam: "Thuis"
-        });
-        
-        console.log($scope.currentLat);
-        console.log($scope.currentLng);
         */
 }]);
 
