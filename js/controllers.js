@@ -1,6 +1,10 @@
 var sitababyApp = angular.module('sitababyApp', ['firebase', 'ngRoute']);
 var locations = [];
 
+sitababyApp.controller('indexCtrl', ['$scope',
+    function ($scope) {
+}]);
+
 window.fbAsyncInit = function () {
     FB.init({
         appId: '986227158099684',
@@ -28,7 +32,10 @@ sitababyApp.config(['$routeProvider', '$locationProvider',
         $routeProvider
             .when("/home", {
                 templateUrl: "partials/home.html",
-                controller: "homeCtrl"
+            })
+            .when("/login", {
+                templateUrl: "partials/login.html",
+                controller: "loginCtrl"
             })
             .when("/babysitters", {
                 templateUrl: "partials/babysitters.html",
@@ -41,7 +48,7 @@ sitababyApp.config(['$routeProvider', '$locationProvider',
                 authenticated: true
             })
             .otherwise({
-                redirectTo: "/home"
+                redirectTo: "/login"
             });
 }]);
 
@@ -74,8 +81,8 @@ sitababyApp.factory('authFact', [function () {
     return authFact;
 }]);
 
-//HOME CONTROLLER
-sitababyApp.controller('homeCtrl', ['$scope', 'authFact', '$location',
+//LOGIN CONTROLLER
+sitababyApp.controller('loginCtrl', ['$scope', 'authFact', '$location',
     function ($scope, authFact, $location) {
         $scope.name = 'Login please';
         $scope.FBLogin = function () {
@@ -89,7 +96,7 @@ sitababyApp.controller('homeCtrl', ['$scope', 'authFact', '$location',
                         console.log(accessToken);
                         authFact.setAccessToken(accessToken);
 
-                        $location.path("/babysitters");
+                        $location.path("/home");
                         $scope.$apply();
                     });
                 } else {
@@ -100,59 +107,9 @@ sitababyApp.controller('homeCtrl', ['$scope', 'authFact', '$location',
             });
         };
 }]);
-/*// facebook login sdk
-        function statusChangeCallback(response) {
-            console.log('statusChangeCallback');
-            console.log(response);
-            if (response.status === 'connected') {
-                // Logged into your app and Facebook.
-                testAPI();
-                // userService.setUser(response);
-            } else if (response.status === 'not_authorized') {
-                // The person is logged into Facebook, but not your app.
-                document.getElementById('status').innerHTML = 'Please log ' +
-                    'into this app.';
-            } else {
-                // The person is not logged into Facebook, so we're not sure if
-                // they are logged into this app or not.
-                document.getElementById('status').innerHTML = 'Please log ' +
-                    'into Facebook.';
-            }
-        }
 
-        // This function is called when someone finishes with the Login
-        // Button.  See the onlogin handler attached to it in the sample
-        // code below.
-        function checkLoginState() {
-            FB.getLoginStatus(function (response) {
-                statusChangeCallback(response);
-            });
-        }
-
-        function testAPI() {
-            console.log('Welcome!  Fetching your information.... ');
-            FB.api('/me', function (response) {
-                console.log('Successful login for: ' + response.name);
-                document.getElementById('status').innerHTML =
-                    'Thanks for logging in, ' + response.name + '!';
-
-                var accessToken = FB.getAuthResponse().accessToken;
-                console.log(accessToken);
-                authFact.setAccessToken(accessToken);
-
-                $location.path("partials/babysitters");
-            });
-        }
-    }
-]);
-*/
 
 //HOME CONTROLLER
-sitababyApp.controller('indexCtrl', ['$scope',
-    function ($scope) {
-
-	}
-]);
 
 //BABYSITTERS CONTROLLER
 sitababyApp.controller('babysittersCtrl', ["$scope", "$firebaseArray",
@@ -180,7 +137,7 @@ sitababyApp.controller('babysittersCtrl', ["$scope", "$firebaseArray",
             navigator.geolocation.getCurrentPosition(function (position) {
                 $scope.currentLat = position.coords.latitude;
                 $scope.currentLng = position.coords.longitude;
-                var map = new google.maps.Map(document.getElementById('map'), {
+                var map = new google.maps.Map(document.getElementById('map2'), {
                     zoom: 16,
                     center: new google.maps.LatLng($scope.currentLat, $scope.currentLng),
                     scrollwheel: true,
