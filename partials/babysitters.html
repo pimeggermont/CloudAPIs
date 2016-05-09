@@ -30,10 +30,16 @@
             <br>
             <br> Sorteer als volgt:
             <select ng-model="sorteren">
-                <option value="name">Alfabetisch</option>
+                <option value="-name">Alfabetisch</option>
                 <option value="-age">Jongste eerst</option>
                 <option value="age">Oudste eerst</option>
             </select>
+            <br>
+            <br>
+            <div>
+                <pre>Selected date is: <em>{{dt | date:'fullDate' }}</em></pre>
+                <uib-datepicker ng-model="dt" class="well well-sm" datepicker-options="options"></uib-datepicker>
+            </div>
         </div>
 
         <div class="col-lg-4 col-md-6 col-xs-12">
@@ -42,7 +48,7 @@
                 <div class="col-lg-4 col-md-4 col-xs-4"><b>Straat</b></div>
                 <div class="col-lg-4 col-md-4 col-xs-4"><b>Geboortejaar</b></div>
             </div>
-            <div class="row" ng-repeat="babysitter in babysitters">
+            <div class="row" ng-repeat="babysitter in babysitters | filter: zoeken: babysitters | orderBy: sorteren: reverse">
                 <div class="col-lg-4 col-md-4 col-xs-4">{{babysitter.name}}</div>
                 <div class="col-lg-4 col-md-4 col-xs-4">{{babysitter.street}}</div>
                 <div class="col-lg-4 col-md-4 col-xs-4">{{babysitter.age}}</div>

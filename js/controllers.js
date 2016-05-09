@@ -1,9 +1,8 @@
-var sitababyApp = angular.module('sitababyApp', ['firebase', 'ngRoute']);
-var locations = [];
+var sitababyApp = angular.module('sitababyApp', ['ngRoute', 'ngAnimate', 'ui.bootstrap']);
+
 
 sitababyApp.controller('indexCtrl', ['$scope',
-    function ($scope) {
-}]);
+    function ($scope) {}]);
 
 window.fbAsyncInit = function () {
     FB.init({
@@ -112,19 +111,64 @@ sitababyApp.controller('loginCtrl', ['$scope', 'authFact', '$location',
 //HOME CONTROLLER
 
 //BABYSITTERS CONTROLLER
-sitababyApp.controller('babysittersCtrl', ["$scope", "$firebaseArray",
-    function ($scope, $firebaseArray) {
+sitababyApp.controller('babysittersCtrl', ["$scope",
+    function ($scope) {
+        // DATEPICKER
+        $scope.today = function () {
+            $scope.dt = new Date();
+        };
+        $scope.today();
 
+        $scope.clear = function () {
+            $scope.dt = null;
+        };
+
+        $scope.options = {
+            customClass: getDayClass,
+            minDate: new Date(),
+            showWeeks: true
+        };
+
+        $scope.toggleMin = function () {
+            $scope.options.minDate = $scope.options.minDate ? null : new Date();
+        };
+
+        $scope.toggleMin();
+
+        $scope.setDate = function (year, month, day) {
+            $scope.dt = new Date(year, month, day);
+        };
+
+        var tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        var afterTomorrow = new Date(tomorrow);
+        afterTomorrow.setDate(tomorrow.getDate() + 1);
+        $scope.events = [];
+
+        function getDayClass(data) {
+            var date = data.date,
+                mode = data.mode;
+            if (mode === 'day') {
+                var dayToCheck = new Date(date).setHours(0, 0, 0, 0);
+
+                for (var i = 0; i < $scope.events.length; i++) {
+                    var currentDay = new Date($scope.events[i].date).setHours(0, 0, 0, 0);
+
+                    if (dayToCheck === currentDay) {
+                        return $scope.events[i].status;
+                    }
+                }
+            }
+
+            return '';
+        }
+        
         // DATA UIT FIREBASE HALEN, EERSTE ELEMENT WEGHALEN OMDAT DIE UNDIFIEND
         var ref = new Firebase("https://glaring-fire-6779.firebaseio.com/babysitters");
         ref.on("value", function (snapshot) {
-            $scope.$apply(function () {
-                var a = snapshot.val();
-                a.shift();
-
-                console.log(a);
-                $scope.babysitters = a;
-            });
+            var a = snapshot.val();
+            $scope.babysitters = a;
+            $scope.$digest();
         }, function (errorObject) {
             console.log("The read failed: " + errorObject.code);
         });

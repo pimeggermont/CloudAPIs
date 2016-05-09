@@ -1,47 +1,45 @@
 .wrapper {
-	width: 90%;
-	margin-top: 2%;
-	margin-left: auto;
-	margin-right: auto;
+    width: 90%;
+    margin-top: 2%;
+    margin-left: auto;
+    margin-right: auto;
 }
-
 li {
-	list-style-type: none;
+    list-style-type: none;
 }
-
 .navbar {
-	background-color: #f3f9ff;
-	border: none;
-	border-radius: none;
-
+    background-color: #f3f9ff;
+    border: none;
+    border-radius: none;
 }
 .navbar-inverse .navbar-brand {
     color: #3f444a;
 }
-
 .navbar-inverse .navbar-nav>li>a {
-	color: #3f444a;
+    color: #3f444a;
 }
-
-
-h4{
-	color: #3f444a;
+h4 {
+    color: #3f444a;
 }
-
 #myCarousel {
-	width: 80%;
-	margin-left: auto;
-	margin-right: auto;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
 }
-.col-xs-4 {
-	
-}
-
-.col-xs-8 {
-}
-
-.map{
+.col-xs-4 {}
+.col-xs-8 {}
+.map {
     height: 500px;
     margin: auto;
     overflow: visible;
+}
+.full button span {
+    background-color: limegreen;
+    border-radius: 32px;
+    color: black;
+}
+.partially button span {
+    background-color: orange;
+    border-radius: 32px;
+    color: black;
 }
