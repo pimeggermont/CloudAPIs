@@ -81,7 +81,7 @@ sitababyApp.factory('authFact', [function () {
 }]);
 
 //LOGIN CONTROLLER
-sitababyApp.controller('loginCtrl', ['$scope', 'authFact', '$location', "$firebaseArray", 
+sitababyApp.controller('loginCtrl', ['$scope', 'authFact', '$location', 
     function ($scope, authFact, $location) {
         $scope.name = 'Login please';
         $scope.FBLogin = function () {
