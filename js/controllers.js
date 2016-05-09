@@ -82,15 +82,23 @@ sitababyApp.factory('authFact', [function () {
 }]);
 
 //LOGIN CONTROLLER
-sitababyApp.controller('loginCtrl', ['$scope', 'authFact', '$location',
+sitababyApp.controller('loginCtrl', ['$scope', 'authFact', '$location', "$firebaseArray", 
     function ($scope, authFact, $location) {
         $scope.name = 'Login please';
         $scope.FBLogin = function () {
             FB.login(function (response) {
                 if (response.authResponse) {
                     console.log('Welcome!  Fetching your information.... ');
-                    FB.api('/me', function (response) {
+                    FB.api('/me?fields=id,name,email', function (response) {
                         console.log('Successful login for: ' + response.name);
+                        console.log(response);
+                        
+                    var ref = new Firebase("https://glaring-fire-6779.firebaseio.com/");
+                    var usersRef = ref.child("users");
+                        usersRef.child(response.id).set({
+                        full_name: response.name,
+                        email: response.email
+                        });
 
                         var accessToken = FB.getAuthResponse().accessToken;
                         console.log(accessToken);
@@ -102,9 +110,10 @@ sitababyApp.controller('loginCtrl', ['$scope', 'authFact', '$location',
                 } else {
                     console.log('User cancelled login or did not fully authorize');
                 }
-
-
-            });
+                
+                
+                    
+            }, {scope: 'public_profile,email'});
         };
 }]);
 
