@@ -1,4 +1,10 @@
-<div class="wrapper">
-{{name}}
-<button ng-click="FBLogin()">Log in with Facebook</button>
+<div class="login-form-wrap">
+    <form class="login">
+        <h1>Facebook</h1>
+        <button ng-click="FBLogin()" class="login-submit">Login</button>
+        <p>I want to be a</p>
+        <p><input type="radio" name="choise" value="male" checked> Babysitter</p>
+        <p><input type="radio" name="choise" value="female"> User</p>
+        <p><input type="radio" name="choise" value="other"> Both</p>  
+    </form>
 </div>

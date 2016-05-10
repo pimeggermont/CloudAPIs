@@ -81,7 +81,7 @@ sitababyApp.factory('authFact', [function () {
 }]);
 
 //LOGIN CONTROLLER
-sitababyApp.controller('loginCtrl', ['$scope', 'authFact', '$location', 
+sitababyApp.controller('loginCtrl', ['$scope', 'authFact', '$location',
     function ($scope, authFact, $location) {
         $scope.name = 'Login please';
         $scope.FBLogin = function () {
@@ -91,12 +91,12 @@ sitababyApp.controller('loginCtrl', ['$scope', 'authFact', '$location',
                     FB.api('/me?fields=id,name,email', function (response) {
                         console.log('Successful login for: ' + response.name);
                         console.log(response);
-                        
-                    var ref = new Firebase("https://glaring-fire-6779.firebaseio.com/");
-                    var usersRef = ref.child("users");
+
+                        var ref = new Firebase("https://glaring-fire-6779.firebaseio.com/");
+                        var usersRef = ref.child("users");
                         usersRef.child(response.id).set({
-                        full_name: response.name,
-                        email: response.email
+                            full_name: response.name,
+                            email: response.email
                         });
 
                         var accessToken = FB.getAuthResponse().accessToken;
@@ -109,10 +109,12 @@ sitababyApp.controller('loginCtrl', ['$scope', 'authFact', '$location',
                 } else {
                     console.log('User cancelled login or did not fully authorize');
                 }
-                
-                
-                    
-            }, {scope: 'public_profile,email'});
+
+
+
+            }, {
+                scope: 'public_profile,email'
+            });
         };
 }]);
 
@@ -120,6 +122,7 @@ sitababyApp.controller('loginCtrl', ['$scope', 'authFact', '$location',
 //HOME CONTROLLER
 
 //BABYSITTERS CONTROLLER
+//var babysitters = [];
 sitababyApp.controller('babysittersCtrl', ["$scope",
     function ($scope) {
         // DATEPICKER
@@ -127,33 +130,20 @@ sitababyApp.controller('babysittersCtrl', ["$scope",
             $scope.dt = new Date();
         };
         $scope.today();
-
-        $scope.clear = function () {
-            $scope.dt = null;
-        };
-
         $scope.options = {
             customClass: getDayClass,
             minDate: new Date(),
             showWeeks: true
         };
-
-        $scope.toggleMin = function () {
-            $scope.options.minDate = $scope.options.minDate ? null : new Date();
-        };
-
-        $scope.toggleMin();
-
         $scope.setDate = function (year, month, day) {
             $scope.dt = new Date(year, month, day);
         };
-
-        var tomorrow = new Date();
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        var afterTomorrow = new Date(tomorrow);
-        afterTomorrow.setDate(tomorrow.getDate() + 1);
-        $scope.events = [];
-
+        var today = new Date();
+        today.setDate(today.getDate());
+        $scope.events = [{
+                date: today,
+                status: 'full'
+            }];
         function getDayClass(data) {
             var date = data.date,
                 mode = data.mode;
@@ -168,16 +158,18 @@ sitababyApp.controller('babysittersCtrl', ["$scope",
                     }
                 }
             }
-
             return '';
         }
-        
-        // DATA UIT FIREBASE HALEN, EERSTE ELEMENT WEGHALEN OMDAT DIE UNDIFIEND
+
+        // DATA UIT FIREBASE HALEN, EERSTE ELEMENT WEGHALEN OMDAT DIE UNDIFINED IS
         var ref = new Firebase("https://glaring-fire-6779.firebaseio.com/babysitters");
         ref.on("value", function (snapshot) {
             var a = snapshot.val();
             $scope.babysitters = a;
-            $scope.$digest();
+            /*for (i = 0; i < a.length; i++) {
+                babysitters[i] = a[i];
+            }
+            babysitters.splice(0,1);*/
         }, function (errorObject) {
             console.log("The read failed: " + errorObject.code);
         });
@@ -191,7 +183,7 @@ sitababyApp.controller('babysittersCtrl', ["$scope",
                 $scope.currentLat = position.coords.latitude;
                 $scope.currentLng = position.coords.longitude;
                 var map = new google.maps.Map(document.getElementById('map2'), {
-                    zoom: 16,
+                    zoom: 14,
                     center: new google.maps.LatLng($scope.currentLat, $scope.currentLng),
                     scrollwheel: true,
                     draggable: true,
@@ -241,7 +233,7 @@ sitababyApp.controller('babysittersCtrl', ["$scope",
 sitababyApp.controller('contactCtrl', ['$scope',
     function ($scope) {
         var mapoptions = {
-            zoom: 16,
+            zoom: 14,
             center: new google.maps.LatLng(51.230056, 4.415792),
             mapTypeId: google.maps.MapTypeId.ROAD
         }
