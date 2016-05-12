@@ -88,7 +88,7 @@ sitababyApp.controller('loginCtrl', ['$scope', 'authFact', '$location',
             FB.login(function (response) {
                 if (response.authResponse) {
                     console.log('Welcome!  Fetching your information.... ');
-                    FB.api('/me?fields=id,name,email', function (response) {
+                    FB.api('/me?fields=id,name,email,gender', function (response) {
                         console.log('Successful login for: ' + response.name);
                         console.log(response);
 
@@ -96,7 +96,8 @@ sitababyApp.controller('loginCtrl', ['$scope', 'authFact', '$location',
                         var usersRef = ref.child("users");
                         usersRef.child(response.id).set({
                             full_name: response.name,
-                            email: response.email
+                            email: response.email,
+                            gender: response.gender
                         });
 
                         var accessToken = FB.getAuthResponse().accessToken;
