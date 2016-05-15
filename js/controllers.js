@@ -95,9 +95,10 @@ sitababyApp.controller('loginCtrl', ['$scope', 'authFact', '$location',
                         var ref = new Firebase("https://glaring-fire-6779.firebaseio.com/");
                         var usersRef = ref.child("users");
                         usersRef.child(response.id).set({
-                            full_name: response.name,
-                            email: response.email,
-                            gender: response.gender
+                            Full_name: response.name,
+                            Email: response.email,
+                            Gender: response.gender,
+                            TypeOfUser: $scope.typeuser
                         });
 
                         var accessToken = FB.getAuthResponse().accessToken;

@@ -3,8 +3,8 @@
         <h1>Facebook</h1>
         <button ng-click="FBLogin()" class="login-submit">Login</button>
         <p>I want to be a</p>
-        <p><input type="radio" name="choise" value="male" checked> Babysitter</p>
-        <p><input type="radio" name="choise" value="female"> User</p>
-        <p><input type="radio" name="choise" value="other"> Both</p>  
+        <p><input type="radio" name="choise" value="Babysitter" ng-model="typeuser" checked> Babysitter</p>
+        <p><input type="radio" name="choise" value="User" ng-model="typeuser"> User</p>
+        <p><input type="radio" name="choise" value="Both" ng-model="typeuser"> Both</p>  
     </form>
 </div>
