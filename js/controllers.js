@@ -125,8 +125,15 @@ sitababyApp.controller('loginCtrl', ['$scope', 'authFact', '$location',
 
 //BABYSITTERS CONTROLLER
 //var babysitters = [];
-sitababyApp.controller('babysittersCtrl', ["$scope",
-    function ($scope) {
+sitababyApp.controller('babysittersCtrl', ["$scope", "$http",
+    function ($scope, $http) {
+        //BOL api 
+            $http.get("https://api.bol.com/catalog/v4/products/1004004011187773?apikey={F0F28A4ABBC47534A8004A1A9A5BD4C61234452F2A89ADC24C8EA668F5A2C2598E4672D5DC4259E08F79D32F44BFC60A45755AC00E1B2CE474CD05B1444004892BD6F131AA5CB615CCE3342E3CE4B551A79D81E320D5C6D5DDD015EB84512B4914012D1DC1CA7DB7DB8AE8CF0E8BA719F60918E4C4A8A9823914A7903AE0D4F5}&offers=cheapest&includeAttributes=false&format=json")
+            .then(function(response) {
+                $scope.bol = response.data;
+        
+            });
+
         // DATEPICKER
         $scope.today = function () {
             $scope.dt = new Date();
