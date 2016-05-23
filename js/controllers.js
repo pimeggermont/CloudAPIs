@@ -131,19 +131,25 @@ sitababyApp.controller('profileCtrl', ["$scope",
     function ($scope) {
         console.log("USERID: " + userid);
         var ref = new Firebase("https://glaring-fire-6779.firebaseio.com/users");
-        ref.on("value", function (snapshot) {
-            console.log(snapshot);
-            for (var i = 0; i < snapshot.length; i++) {
-                if (snapshot.id == userid) {
-                    var a = snapshot.val();
-                    $scope.profileData = a;
-                    console.log(a);
-                }
-            }
+        ref.orderByKey().startAt(userid).endAt(userid).on("value", function (snapshot) {
+            $scope.profileData = snapshot.val();
+            console.log($scope.profileData);
         }, function (errorObject) {
             console.log("The read failed: " + errorObject.code);
         });
-        console.log($scope.profileData);
+        
+        $scope.writeUserInfo = function(){
+            var ref = new Firebase("https://glaring-fire-6779.firebaseio.com/");
+                        var usersRef = ref.child("users");
+                        usersRef.child(userid).set({
+                            Full_name: $scope.fullname,
+                            Email: $scope.email,
+                            Birthday: $scope.birthday,
+                            Education: $scope.education,
+                            Gender: $scope.gender
+                        });
+            console.log("Testje");
+        }
     }]);
 
 //BABYSITTERS CONTROLLER
@@ -151,10 +157,10 @@ sitababyApp.controller('profileCtrl', ["$scope",
 sitababyApp.controller('babysittersCtrl', ["$scope", "$http",
     function ($scope, $http) {
         //BOL api 
-            $http.get("https://api.bol.com/catalog/v4/products/1004004011187773?apikey={'F0F28A4ABBC47534A8004A1A9A5BD4C61234452F2A89ADC24C8EA668F5A2C2598E4672D5DC4259E08F79D32F44BFC60A45755AC00E1B2CE474CD05B1444004892BD6F131AA5CB615CCE3342E3CE4B551A79D81E320D5C6D5DDD015EB84512B4914012D1DC1CA7DB7DB8AE8CF0E8BA719F60918E4C4A8A9823914A7903AE0D4F5'}&offers=cheapest&includeAttributes=false&format=json")
-            .then(function(response) {
+        $http.get("https://api.bol.com/catalog/v4/products/1004004011187773?apikey={'F0F28A4ABBC47534A8004A1A9A5BD4C61234452F2A89ADC24C8EA668F5A2C2598E4672D5DC4259E08F79D32F44BFC60A45755AC00E1B2CE474CD05B1444004892BD6F131AA5CB615CCE3342E3CE4B551A79D81E320D5C6D5DDD015EB84512B4914012D1DC1CA7DB7DB8AE8CF0E8BA719F60918E4C4A8A9823914A7903AE0D4F5'}&offers=cheapest&includeAttributes=false&format=json")
+            .then(function (response) {
                 $scope.bol = response.data;
-        
+
             });
 
         // DATEPICKER
