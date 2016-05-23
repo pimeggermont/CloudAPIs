@@ -93,15 +93,17 @@ sitababyApp.controller('loginCtrl', ['$scope', 'authFact', '$location',
             FB.login(function (response) {
                 if (response.authResponse) {
                     console.log('Welcome!  Fetching your information.... ');
-                    FB.api('/me?fields=id,name,email', function (response) {
+                    FB.api('/me?fields=id,name,email,gender', function (response) {
                         console.log('Successful login for: ' + response.name);
                         console.log(response);
                         userid = response.id;
                         var ref = new Firebase("https://glaring-fire-6779.firebaseio.com/");
                         var usersRef = ref.child("users");
                         usersRef.child(response.id).set({
-                            full_name: response.name,
-                            email: response.email
+                            Full_name: response.name,
+                            Email: response.email,
+                            Gender: response.gender,
+                            TypeOfUser: $scope.typeuser
                         });
 
                         var accessToken = FB.getAuthResponse().accessToken;
@@ -146,8 +148,15 @@ sitababyApp.controller('profileCtrl', ["$scope",
 
 //BABYSITTERS CONTROLLER
 //var babysitters = [];
-sitababyApp.controller('babysittersCtrl', ["$scope",
-    function ($scope) {
+sitababyApp.controller('babysittersCtrl', ["$scope", "$http",
+    function ($scope, $http) {
+        //BOL api 
+            $http.get("https://api.bol.com/catalog/v4/products/1004004011187773?apikey={'F0F28A4ABBC47534A8004A1A9A5BD4C61234452F2A89ADC24C8EA668F5A2C2598E4672D5DC4259E08F79D32F44BFC60A45755AC00E1B2CE474CD05B1444004892BD6F131AA5CB615CCE3342E3CE4B551A79D81E320D5C6D5DDD015EB84512B4914012D1DC1CA7DB7DB8AE8CF0E8BA719F60918E4C4A8A9823914A7903AE0D4F5'}&offers=cheapest&includeAttributes=false&format=json")
+            .then(function(response) {
+                $scope.bol = response.data;
+        
+            });
+
         // DATEPICKER
         $scope.today = function () {
             $scope.dt = new Date();
@@ -186,7 +195,7 @@ sitababyApp.controller('babysittersCtrl', ["$scope",
         }
 
         // DATA UIT FIREBASE HALEN, EERSTE ELEMENT WEGHALEN OMDAT DIE UNDIFINED IS
-        var ref = new Firebase("https://glaring-fire-6779.firebaseio.com/babysitters");
+        var ref = new Firebase("https://glaring-fire-6779.firebaseio.com/users");
         ref.on("value", function (snapshot) {
             var a = snapshot.val();
             $scope.babysitters = a;
