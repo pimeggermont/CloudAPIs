@@ -24,8 +24,7 @@
     <div class="row">
         <div class="col-lg-4 col-md-6 col-xs-12">
             <div>
-                <p>Zoek jouw babysitter:</p>
-                <input ng-model="zoeken">
+                <p>Zoek jouw babysitter:</p><input type="text" ng-model="zoeken">
                 <br>
                 <br> Sorteer als volgt:
                 <select ng-model="sorteren">
@@ -34,12 +33,26 @@
                     <option value="age">Oudste eerst</option>
                 </select>
             </div>
+            
+            
+            <table id="searchTextResults">
+                    <tr><th>Name</th><th>Email</th><th>Geslacht</th></tr>
+                    <tr ng-repeat="x in babysitters | filter:{Full_name:zoeken}">
+                    <td>{{x.Full_name}}</td>
+                    <td>{{x.Email}}</td>
+                    <td>{{x.Gender}}</td>
+                    <td>{{x.TypeOfUser}}</td>
+                    </tr>
+            </table>
+            
             <div>
                 <h5>Selected date is: <em>{{dt | date:'fullDate' }}</em>
                 <button type="button" class="btn btn-sm btn-info" ng-click="today()">Go to today</button></h5>
                 <uib-datepicker ng-model="dt" class="well well-sm" datepicker-options="options"></uib-datepicker>
                 
             </div>
+            
+            
         </div>        
         <div class="col-lg-4 col-md-6 col-xs-12">
             <div class="row">

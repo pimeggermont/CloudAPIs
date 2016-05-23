@@ -202,9 +202,10 @@ sitababyApp.controller('babysittersCtrl', ["$scope", "$http",
 
         // DATA UIT FIREBASE HALEN, EERSTE ELEMENT WEGHALEN OMDAT DIE UNDIFINED IS
         var ref = new Firebase("https://glaring-fire-6779.firebaseio.com/users");
-        ref.on("value", function (snapshot) {
-            var a = snapshot.val();
-            $scope.babysitters = a;
+        $scope.babysitters = [];
+        ref.on("child_added", function (snapshot) {
+            $scope.babysitters.push(snapshot.val());
+            console.log($scope.babysitters);
             /*for (i = 0; i < a.length; i++) {
                 babysitters[i] = a[i];
             }
