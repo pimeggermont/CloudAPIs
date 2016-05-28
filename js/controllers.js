@@ -85,6 +85,7 @@ sitababyApp.factory('authFact', [function () {
     return authFact;
 }]);
 var userid;
+var usertyp;
 //LOGIN CONTROLLER
 sitababyApp.controller('loginCtrl', ['$scope', 'authFact', '$location',
     function ($scope, authFact, $location) {
@@ -97,13 +98,14 @@ sitababyApp.controller('loginCtrl', ['$scope', 'authFact', '$location',
                         console.log('Successful login for: ' + response.name);
                         console.log(response);
                         userid = response.id;
+                        usertyp = $scope.typeuser;
                         var ref = new Firebase("https://glaring-fire-6779.firebaseio.com/");
                         var usersRef = ref.child("users");
                         usersRef.child(response.id).set({
-                            Full_name: response.name,
-                            Email: response.email,
-                            Gender: response.gender,
-                            TypeOfUser: $scope.typeuser
+                            full_name: response.name,
+                            email: response.email,
+                            gender: response.gender,
+                            typeofuser: $scope.typeuser
                         });
 
                         var accessToken = FB.getAuthResponse().accessToken;
@@ -116,9 +118,6 @@ sitababyApp.controller('loginCtrl', ['$scope', 'authFact', '$location',
                 } else {
                     console.log('User cancelled login or did not fully authorize');
                 }
-
-
-
             }, {
                 scope: 'public_profile,email'
             });
@@ -129,6 +128,7 @@ sitababyApp.controller('loginCtrl', ['$scope', 'authFact', '$location',
 //PROFILE CONTROLLER
 sitababyApp.controller('profileCtrl', ["$scope",
     function ($scope) {
+        $scope.uptodate = "";
         console.log("USERID: " + userid);
         var ref = new Firebase("https://glaring-fire-6779.firebaseio.com/users");
         ref.orderByKey().startAt(userid).endAt(userid).on("value", function (snapshot) {
@@ -137,18 +137,20 @@ sitababyApp.controller('profileCtrl', ["$scope",
         }, function (errorObject) {
             console.log("The read failed: " + errorObject.code);
         });
-        
-        $scope.writeUserInfo = function(){
+
+        $scope.writeUserInfo = function () {
             var ref = new Firebase("https://glaring-fire-6779.firebaseio.com/");
-                        var usersRef = ref.child("users");
-                        usersRef.child(userid).set({
-                            Full_name: $scope.fullname,
-                            Email: $scope.email,
-                            Birthday: $scope.birthday,
-                            Education: $scope.education,
-                            Gender: $scope.gender
-                        });
-            console.log("Testje");
+            var usersRef = ref.child("users");
+            usersRef.child(userid).set({
+                full_name: $scope.full_name,
+                birthday: $scope.birthday,
+                email: $scope.email,
+                education: $scope.education,
+                school: $scope.school,
+                gender: $scope.gender,
+                typeofuser: usertyp
+            });
+            $scope.uptodate = "Profile is up to date! Have a nice day!";
         }
     }]);
 
