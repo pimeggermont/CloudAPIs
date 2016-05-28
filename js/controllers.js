@@ -105,7 +105,8 @@ sitababyApp.controller('loginCtrl', ['$scope', 'authFact', '$location',
                             full_name: response.name,
                             email: response.email,
                             gender: response.gender,
-                            typeofuser: $scope.typeuser
+                            typeofuser: $scope.typeuser,
+                         
                         });
 
                         var accessToken = FB.getAuthResponse().accessToken;
@@ -131,9 +132,10 @@ sitababyApp.controller('profileCtrl', ["$scope",
         $scope.uptodate = "";
         console.log("USERID: " + userid);
         var ref = new Firebase("https://glaring-fire-6779.firebaseio.com/users");
-        ref.orderByKey().startAt(userid).endAt(userid).on("value", function (snapshot) {
+        ref.orderByKey().startAt(userid).endAt(userid).on("child_added", function (snapshot) {
             $scope.profileData = snapshot.val();
             console.log($scope.profileData);
+            $scope.$apply();
         }, function (errorObject) {
             console.log("The read failed: " + errorObject.code);
         });
@@ -142,13 +144,13 @@ sitababyApp.controller('profileCtrl', ["$scope",
             var ref = new Firebase("https://glaring-fire-6779.firebaseio.com/");
             var usersRef = ref.child("users");
             usersRef.child(userid).set({
-                full_name: $scope.full_name,
-                birthday: $scope.birthday,
-                email: $scope.email,
-                education: $scope.education,
-                school: $scope.school,
-                gender: $scope.gender,
-                typeofuser: usertyp
+                full_name: $scope.profileData.full_name,
+                birthday: $scope.profileData.birthday,
+                email: $scope.profileData.email,
+                education: $scope.profileData.education,
+                school: $scope.profileData.school,
+                gender: $scope.profileData.gender,
+                typeofuser: $scope.profileData.typeofuser,
             });
             $scope.uptodate = "Profile is up to date! Have a nice day!";
         }
