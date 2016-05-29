@@ -184,23 +184,6 @@ app.get("/users/2/typeofuser",function(req,res){
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-app.delete("/users/1",function(req,res){
-	request("https://glaring-fire-6779.firebaseio.com/users/587939441383750.json", function (error, response, body) {
-		if (!error && response.statusCode == 200) {
-			console.log(body);
-			res.send(JSON.parse(body));
-            delete data["587939441383750"];
-		}
-	});
-});
-
-
-
-
-
-
-
-
 
 //toevoegen twitter 
 app.get('/tweets', function (request, response) {

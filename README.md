@@ -11,4 +11,4 @@ Met vriendelijke groeten Team SitABaby
 Teamleden:
 Koen Creve
 Pim Eggermont
-Mohammed El Aissati
+Mohamed El Aissati
