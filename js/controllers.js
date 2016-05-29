@@ -31,6 +31,7 @@ sitababyApp.config(['$routeProvider', '$locationProvider',
         $routeProvider
             .when("/home", {
                 templateUrl: "partials/home.html",
+                controller: "homeCtrl"
             })
             .when("/login", {
                 templateUrl: "partials/login.html",
@@ -85,11 +86,14 @@ sitababyApp.factory('authFact', [function () {
     return authFact;
 }]);
 var userid;
+var usertyp;
+var checkuser;
+var responsefb;
 //LOGIN CONTROLLER
 sitababyApp.controller('loginCtrl', ['$scope', 'authFact', '$location',
     function ($scope, authFact, $location) {
         $scope.name = 'Login please';
-        $scope.FBLogin = function () {
+            $scope.FBLogin = function () {
             FB.login(function (response) {
                 if (response.authResponse) {
                     console.log('Welcome!  Fetching your information.... ');
@@ -97,20 +101,12 @@ sitababyApp.controller('loginCtrl', ['$scope', 'authFact', '$location',
                         console.log('Successful login for: ' + response.name);
                         console.log(response);
                         userid = response.id;
-                        var ref = new Firebase("https://glaring-fire-6779.firebaseio.com/");
-                        var usersRef = ref.child("users");
-                        usersRef.child(response.id).set({
-                            full_name: response.name,
-                            email: response.email,
-                            gender: response.gender,
-                            typeofuser: $scope.typeuser,
-                         
-                        });
-
+                        usertyp = $scope.typeuser;
+                        responsefb = response;
                         var accessToken = FB.getAuthResponse().accessToken;
                         console.log(accessToken);
                         authFact.setAccessToken(accessToken);
-
+                        $scope.checkexists();
                         $location.path("/home");
                         $scope.$apply();
                     });
@@ -121,6 +117,34 @@ sitababyApp.controller('loginCtrl', ['$scope', 'authFact', '$location',
                 scope: 'public_profile,email'
             });
         };
+        
+        
+            $scope.checkexists = function (){
+            var ref = new Firebase("https://glaring-fire-6779.firebaseio.com/users");
+            ref.once("value", function(snapshot) {
+            var checkuser = snapshot.hasChild(userid);
+            console.log(checkuser);
+            // false = user niet aanwezig in databank
+            // true = user aanwezig in databank
+                        if(checkuser == false){
+                            console.log("user bestaat niet, user word aangemaakt");
+                            var ref = new Firebase("https://glaring-fire-6779.firebaseio.com/");
+                            var usersRef = ref.child("users");
+                            usersRef.child(responsefb.id).set({
+                            full_name: responsefb.name,
+                            email: responsefb.email,
+                            gender: responsefb.gender,
+                            typeofuser: $scope.typeuser,
+                         
+                        });
+                        
+                        }
+                        else{
+                            console.log("user bestaat  al in firebase");
+                        }
+
+        })};
+
 }]);
 
 
@@ -158,17 +182,22 @@ sitababyApp.controller('profileCtrl', ["$scope",
             $scope.uptodate = "Profile is up to date! Have a nice day!";
         }
     }]);
-
+//HOME CONTROLLER
+sitababyApp.controller('homeCtrl', ["$scope", "$http",
+    function ($scope, $http){
+          //twitter api
+        $scope.myTwitterData = [];
+        $http.get("http://localhost:3000/tweets")
+        .then(function(response) {
+            console.log(response.data);
+            $scope.myTwitterData = response.data.statuses;
+            console.log($scope.myTwitterData);
+        });   
+    }])
 //BABYSITTERS CONTROLLER
 //var babysitters = [];
 sitababyApp.controller('babysittersCtrl', ["$scope", "$http",
     function ($scope, $http) {
-        //BOL api 
-        $http.get("https://api.bol.com/catalog/v4/products/1004004011187773?apikey={'F0F28A4ABBC47534A8004A1A9A5BD4C61234452F2A89ADC24C8EA668F5A2C2598E4672D5DC4259E08F79D32F44BFC60A45755AC00E1B2CE474CD05B1444004892BD6F131AA5CB615CCE3342E3CE4B551A79D81E320D5C6D5DDD015EB84512B4914012D1DC1CA7DB7DB8AE8CF0E8BA719F60918E4C4A8A9823914A7903AE0D4F5'}&offers=cheapest&includeAttributes=false&format=json")
-            .then(function (response) {
-                $scope.bol = response.data;
-
-            });
 
         // DATEPICKER
         $scope.today = function () {
@@ -208,17 +237,20 @@ sitababyApp.controller('babysittersCtrl', ["$scope", "$http",
         }
 
         // DATA UIT FIREBASE HALEN, EERSTE ELEMENT WEGHALEN OMDAT DIE UNDIFINED IS
-        var ref = new Firebase("https://glaring-fire-6779.firebaseio.com/users");
-        $scope.babysitters = [];
-        ref.on("child_added", function (snapshot) {
+            var ref = new Firebase("https://glaring-fire-6779.firebaseio.com/users");
+            $scope.babysitters = [];
+            ref.orderByChild("typeofuser").equalTo("Babysitter").on("child_added", function(snapshot) {
             $scope.babysitters.push(snapshot.val());
             console.log($scope.babysitters);
-            /*for (i = 0; i < a.length; i++) {
-                babysitters[i] = a[i];
-            }
-            babysitters.splice(0,1);*/
-        }, function (errorObject) {
-            console.log("The read failed: " + errorObject.code);
+            $scope.$apply();
+                
+        });
+        
+            ref.orderByChild("typeofuser").equalTo("Both").on("child_added", function(snapshot) {
+            $scope.babysitters.push(snapshot.val());
+            console.log($scope.babysitters);
+            $scope.$apply();
+                
         });
 
         $scope.sorteren = 'name';
