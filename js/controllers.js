@@ -87,11 +87,13 @@ sitababyApp.factory('authFact', [function () {
 }]);
 var userid;
 var usertyp;
+var checkuser;
+var responsefb;
 //LOGIN CONTROLLER
 sitababyApp.controller('loginCtrl', ['$scope', 'authFact', '$location',
     function ($scope, authFact, $location) {
         $scope.name = 'Login please';
-        $scope.FBLogin = function () {
+            $scope.FBLogin = function () {
             FB.login(function (response) {
                 if (response.authResponse) {
                     console.log('Welcome!  Fetching your information.... ');
@@ -100,20 +102,11 @@ sitababyApp.controller('loginCtrl', ['$scope', 'authFact', '$location',
                         console.log(response);
                         userid = response.id;
                         usertyp = $scope.typeuser;
-                        var ref = new Firebase("https://glaring-fire-6779.firebaseio.com/");
-                        var usersRef = ref.child("users");
-                        usersRef.child(response.id).set({
-                            full_name: response.name,
-                            email: response.email,
-                            gender: response.gender,
-                            typeofuser: $scope.typeuser,
-                         
-                        });
-
+                        responsefb = response;
                         var accessToken = FB.getAuthResponse().accessToken;
                         console.log(accessToken);
                         authFact.setAccessToken(accessToken);
-
+                        $scope.checkexists();
                         $location.path("/home");
                         $scope.$apply();
                     });
@@ -124,6 +117,34 @@ sitababyApp.controller('loginCtrl', ['$scope', 'authFact', '$location',
                 scope: 'public_profile,email'
             });
         };
+        
+        
+            $scope.checkexists = function (){
+            var ref = new Firebase("https://glaring-fire-6779.firebaseio.com/users");
+            ref.once("value", function(snapshot) {
+            var checkuser = snapshot.hasChild(userid);
+            console.log(checkuser);
+            // false = user niet aanwezig in databank
+            // true = user aanwezig in databank
+                        if(checkuser == false){
+                            console.log("user bestaat niet, user word aangemaakt");
+                            var ref = new Firebase("https://glaring-fire-6779.firebaseio.com/");
+                            var usersRef = ref.child("users");
+                            usersRef.child(responsefb.id).set({
+                            full_name: responsefb.name,
+                            email: responsefb.email,
+                            gender: responsefb.gender,
+                            typeofuser: $scope.typeuser,
+                         
+                        });
+                        
+                        }
+                        else{
+                            console.log("user bestaat  al in firebase");
+                        }
+
+        })};
+
 }]);
 
 
