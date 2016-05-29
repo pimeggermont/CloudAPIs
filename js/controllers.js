@@ -169,9 +169,9 @@ sitababyApp.controller('profileCtrl', ["$scope",
             usersRef.child(userid).set({
                 full_name: $scope.profileData.full_name,
                 birthday:{
-                    day:$scope.profileData.day,
-                    month:$scope.profileData.month,
-                    year:$scope.profileData.year
+                    day:$scope.profileData.birthday.day,
+                    month:$scope.profileData.birthday.month,
+                    year:$scope.profileData.birthday.year
                 },
                 email: $scope.profileData.email,
                 education: $scope.profileData.education,
