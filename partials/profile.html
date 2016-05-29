@@ -34,74 +34,73 @@
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 personal-info">
 
             <h3>Personal info</h3>
-            <form class="form-horizontal" role="form">
+            <form class="form-horizontal">
 
                 <div class="form-group">
                     <label class="col-lg-3 control-label">Full name:</label>
-                    <div class="col-lg-6">
+                    <div class="col-lg-7">
                         <input class="form-control" ng-model="profileData.full_name" type="text" placeholder="Naam">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-lg-3 control-label">Birthday:</label>
-                    <div class="col-lg-6">
-                        <input class="form-control" ng-model="profileData.birthday" type="text" placeholder="Geboortedatum - DD/MM/YYYY">
+                    <div class="col-lg-2">
+                        <input class="form-control" ng-model="profileData.day" type="number" min="1" max="31"placeholder="DD">
                     </div>
+                    <div class="col-lg-2">
+                        <input class="form-control" ng-model="profileData.month" type="number" min="1" max="12"placeholder="MM">
+                    </div>
+                    <div class="col-lg-3">
+                        <input class="form-control" ng-model="profileData.year" type="number" max="2016" placeholder="YYYY">
+                    </div>
+
+
                 </div>
 
                 <div class="form-group">
                     <label class="col-lg-3 control-label">Email:</label>
-                    <div class="col-lg-6">
+                    <div class="col-lg-7">
                         <input class="form-control" ng-model="profileData.email" type="email" placeholder="Email">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-lg-3 control-label">Education:</label>
-                    <div class="col-lg-6">
-                        <input class="form-control" ng-model="profileData.education" type="text" placeholder="Studie richting">
+                    <div class="col-lg-7">
+                        <input class="form-control" ng-model="profileData.education" type="text" placeholder="Education">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-lg-3 control-label">School:</label>
-                    <div class="col-lg-6">
+                    <div class="col-lg-7">
                         <input class="form-control" ng-model="profileData.school" type="text" placeholder="School">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-lg-3 control-label">Gender:</label>
-                    <div class="col-lg-6">
+                    <div class="col-lg-7">
                         <input type="radio" ng-model="profileData.gender" value="male"> Male
                         <input type="radio" ng-model="profileData.gender" value="female"> Female
-                        <br>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-lg-3 control-label">Type user:</label>
-                    <div class="col-lg-6">
+                    <div class="col-lg-7">
                         <input type="radio" ng-model="profileData.typeofuser" value="Babysitter"> Babysitter
                         <input type="radio" ng-model="profileData.typeofuser" value="User"> User
                         <input type="radio" ng-model="profileData.typeofuser" value="Both"> Both
-                        <br>
                     </div>
                 </div>
-                <div class="col-lg-12">{{uptodate}}</div>
-                
-
-
-
+                <b>{{uptodate}}</b>
                 <div class="form-group">
-                    <label class="col-md-3 control-label"></label>
+                    <div class="col-md-3 "></div>
                     <div class="col-md-6">
-                        <input class="btn btn-primary" ng-click="writeUserInfo()" value="Save Changes" type="button">
-                        <span></span>
-                        <input class="btn btn-default" value="Cancel" type="reset">
+                        <button type="submit" class="btn btn-primary" ng-click="writeUserInfo()">Save Changes</button>
                     </div>
                 </div>
-
             </form>
         </div>
     </div>

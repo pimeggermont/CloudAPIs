@@ -85,7 +85,6 @@ sitababyApp.factory('authFact', [function () {
     return authFact;
 }]);
 var userid;
-var usertyp;
 //LOGIN CONTROLLER
 sitababyApp.controller('loginCtrl', ['$scope', 'authFact', '$location',
     function ($scope, authFact, $location) {
@@ -98,7 +97,6 @@ sitababyApp.controller('loginCtrl', ['$scope', 'authFact', '$location',
                         console.log('Successful login for: ' + response.name);
                         console.log(response);
                         userid = response.id;
-                        usertyp = $scope.typeuser;
                         var ref = new Firebase("https://glaring-fire-6779.firebaseio.com/");
                         var usersRef = ref.child("users");
                         usersRef.child(response.id).set({
@@ -129,6 +127,7 @@ sitababyApp.controller('loginCtrl', ['$scope', 'authFact', '$location',
 //PROFILE CONTROLLER
 sitababyApp.controller('profileCtrl', ["$scope",
     function ($scope) {
+        $scope.url = "img/noprofilepic.png"
         $scope.uptodate = "";
         console.log("USERID: " + userid);
         var ref = new Firebase("https://glaring-fire-6779.firebaseio.com/users");
@@ -145,7 +144,11 @@ sitababyApp.controller('profileCtrl', ["$scope",
             var usersRef = ref.child("users");
             usersRef.child(userid).set({
                 full_name: $scope.profileData.full_name,
-                birthday: $scope.profileData.birthday,
+                birthday:{
+                    day:$scope.profileData.day,
+                    month:$scope.profileData.month,
+                    year:$scope.profileData.year
+                },
                 email: $scope.profileData.email,
                 education: $scope.profileData.education,
                 school: $scope.profileData.school,
