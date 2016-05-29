@@ -232,17 +232,20 @@ sitababyApp.controller('babysittersCtrl', ["$scope", "$http",
         }
 
         // DATA UIT FIREBASE HALEN, EERSTE ELEMENT WEGHALEN OMDAT DIE UNDIFINED IS
-        var ref = new Firebase("https://glaring-fire-6779.firebaseio.com/users");
-        $scope.babysitters = [];
-        ref.on("child_added", function (snapshot) {
+            var ref = new Firebase("https://glaring-fire-6779.firebaseio.com/users");
+            $scope.babysitters = [];
+            ref.orderByChild("typeofuser").equalTo("Babysitter").on("child_added", function(snapshot) {
             $scope.babysitters.push(snapshot.val());
             console.log($scope.babysitters);
-            /*for (i = 0; i < a.length; i++) {
-                babysitters[i] = a[i];
-            }
-            babysitters.splice(0,1);*/
-        }, function (errorObject) {
-            console.log("The read failed: " + errorObject.code);
+            $scope.$apply();
+                
+        });
+        
+            ref.orderByChild("typeofuser").equalTo("Both").on("child_added", function(snapshot) {
+            $scope.babysitters.push(snapshot.val());
+            console.log($scope.babysitters);
+            $scope.$apply();
+                
         });
 
         $scope.sorteren = 'name';

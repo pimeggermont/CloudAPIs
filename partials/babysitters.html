@@ -26,24 +26,13 @@
             <div>
                 <p>Zoek jouw babysitter:</p><input type="text" ng-model="zoeken">
                 <br>
-                <br> Sorteer als volgt:
+                 <br> Sorteer als volgt:
                 <select ng-model="sorteren">
-                    <option value="-name">Alfabetisch</option>
-                    <option value="-age">Jongste eerst</option>
-                    <option value="age">Oudste eerst</option>
+                    <option value="full_name">Alfabetisch</option>
+                    <option value="gender">Geslacht</option>
                 </select>
             </div>
             
-            
-            <table id="searchTextResults">
-                    <tr><th>Name</th><th>Email</th><th>Geslacht</th></tr>
-                    <tr ng-repeat="x in babysitters | filter:{Full_name:zoeken}">
-                    <td>{{x.Full_name}}</td>
-                    <td>{{x.Email}}</td>
-                    <td>{{x.Gender}}</td>
-                    <td>{{x.TypeOfUser}}</td>
-                    </tr>
-            </table>
             
             <div>
                 <h5>Selected date is: <em>{{dt | date:'fullDate' }}</em>
@@ -61,10 +50,10 @@
                 <div class="col-lg-4 col-md-4 col-xs-4"><b>Geslacht</b></div>
             </div>
             <!--  | filter: zoeken: babysitters | orderBy: sorteren: reverse -->
-            <div class="row" ng-repeat="babysitter in babysitters">
-                <div class="col-lg-4 col-md-4 col-xs-4">{{babysitter.Full_name}}</div>
-                <div class="col-lg-4 col-md-4 col-xs-4">{{babysitter.Email}}</div>
-                <div class="col-lg-4 col-md-4 col-xs-4">{{babysitter.Gender}}</div>
+            <div class="row" ng-repeat= "x in babysitters | filter:{full_name:zoeken} | orderBy:sorteren">
+                <div class="col-lg-4 col-md-4 col-xs-4">{{x.full_name}}</div>
+                <div class="col-lg-4 col-md-4 col-xs-4">{{x.email}}</div>
+                <div class="col-lg-4 col-md-4 col-xs-4">{{x.gender}}</div>
             </div>
 
             <div>
